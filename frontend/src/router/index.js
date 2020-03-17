@@ -3,12 +3,7 @@ import Router from "vue-router";
 import Login from "../views/Login";
 import Profile from "../views/Profile";
 import TaAssignment from "../views/TaAssignment";
-import {
-  AuthGuard,
-  TaOnly,
-  TaSupervisorOnly,
-  TaCoordinatorOnly
-} from "./auth-middleware";
+import { guards } from "./auth-middleware";
 import Logout from "../views/Logout";
 import Past from "../views/Past";
 import Current from "../views/Current";
@@ -26,7 +21,7 @@ const router = new Router({
       path: "/login",
       name: "login",
       component: Login,
-      meta: { hide: ["sidenav"] }
+      meta: { hide: ["sidenav"], fillHeight: true }
     },
     {
       path: "/logout",
@@ -83,9 +78,6 @@ const router = new Router({
   ]
 });
 
-router.beforeEach(AuthGuard);
-router.beforeEach(TaOnly);
-router.beforeEach(TaSupervisorOnly);
-router.beforeEach(TaCoordinatorOnly);
+guards.forEach(guard => router.beforeEach(guard));
 
 export default router;
